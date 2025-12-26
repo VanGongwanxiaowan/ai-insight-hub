@@ -11,6 +11,7 @@ import {
   Sparkles,
   Tag,
   Settings2,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -42,6 +43,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 
   const navItems = [
     { title: t("nav.discovery"), url: "/", icon: Compass },
+    { title: t("nav.academicCircle"), url: "/academic-circle", icon: Users },
     { title: t("nav.classicHall"), url: "/classic-hall", icon: Trophy },
     { title: t("nav.notebook"), url: "/notebook", icon: BookOpen },
     { title: t("nav.agentLab"), url: "/agent-lab", icon: FlaskConical },
