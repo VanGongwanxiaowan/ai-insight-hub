@@ -5,7 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import Index from "./pages/Index";
-import Library from "./pages/Library";
+import ClassicHall from "./pages/ClassicHall";
+import Notebook from "./pages/Notebook";
 import AgentLab from "./pages/AgentLab";
 import Settings from "./pages/Settings";
 import Reading from "./pages/Reading";
@@ -27,7 +28,8 @@ const App = () => (
               <MainLayout>
                 <Routes>
                   <Route path="/" element={<Index />} />
-                  <Route path="/library" element={<Library />} />
+                  <Route path="/classic-hall" element={<ClassicHall />} />
+                  <Route path="/notebook" element={<Notebook />} />
                   <Route path="/agent-lab" element={<AgentLab />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="*" element={<NotFound />} />

@@ -2,12 +2,15 @@ import { useLocation, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Compass,
-  Library,
+  Trophy,
+  BookOpen,
   FlaskConical,
   Settings,
   ChevronLeft,
   ChevronRight,
   Sparkles,
+  Tag,
+  Settings2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,11 +20,21 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 
 interface AppSidebarProps {
   collapsed: boolean;
   onToggle: () => void;
 }
+
+// Mock tags data
+const topTags = [
+  { id: "1", name: "LLM", count: 24 },
+  { id: "2", name: "Transformer", count: 18 },
+  { id: "3", name: "RL", count: 12 },
+  { id: "4", name: "Diffusion", count: 9 },
+  { id: "5", name: "Multimodal", count: 7 },
+];
 
 export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
   const { t } = useTranslation();
@@ -29,7 +42,8 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 
   const navItems = [
     { title: t("nav.discovery"), url: "/", icon: Compass },
-    { title: t("nav.library"), url: "/library", icon: Library },
+    { title: t("nav.classicHall"), url: "/classic-hall", icon: Trophy },
+    { title: t("nav.notebook"), url: "/notebook", icon: BookOpen },
     { title: t("nav.agentLab"), url: "/agent-lab", icon: FlaskConical },
     { title: t("nav.settings"), url: "/settings", icon: Settings },
   ];
@@ -68,7 +82,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const isActive = location.pathname === item.url;
           const NavItem = (
@@ -79,13 +93,15 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group",
                 isActive
                   ? "bg-primary/10 text-primary border border-primary/20"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent",
+                item.url === "/classic-hall" && isActive && "bg-amber-500/10 text-amber-500 border-amber-500/20"
               )}
             >
               <item.icon
                 className={cn(
                   "h-5 w-5 flex-shrink-0 transition-colors",
-                  isActive && "text-primary"
+                  isActive && "text-primary",
+                  item.url === "/classic-hall" && isActive && "text-amber-500"
                 )}
               />
               {!collapsed && (
@@ -107,6 +123,59 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 
           return NavItem;
         })}
+
+        {/* Tags Section */}
+        {!collapsed && (
+          <div className="pt-6 mt-6 border-t border-sidebar-border">
+            <div className="flex items-center justify-between px-3 mb-3">
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                {t("nav.tags")}
+              </span>
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-6 w-6">
+                    <Settings2 className="h-3.5 w-3.5 text-muted-foreground" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  {t("nav.manageTags")}
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <div className="space-y-1">
+              {topTags.map((tag) => (
+                <Link
+                  key={tag.id}
+                  to={`/?tag=${tag.name}`}
+                  className="flex items-center justify-between px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors group"
+                >
+                  <span className="flex items-center gap-2 text-sm">
+                    <Tag className="h-3.5 w-3.5" />
+                    {tag.name}
+                  </span>
+                  <Badge variant="secondary" className="text-xs h-5 px-1.5 bg-muted">
+                    {tag.count}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {collapsed && (
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>
+              <div className="mt-6 pt-6 border-t border-sidebar-border">
+                <div className="flex items-center justify-center px-3 py-2.5 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg cursor-pointer">
+                  <Tag className="h-5 w-5" />
+                </div>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="bg-popover border-border">
+              {t("nav.tags")}
+            </TooltipContent>
+          </Tooltip>
+        )}
       </nav>
 
       {/* User Profile Widget */}
