@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useRef } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -14,18 +15,26 @@ interface ExecutionLogProps {
   logs: LogEntry[];
 }
 
-const agentColors: Record<string, string> = {
-  "Task Input": "text-primary",
-  "Search Agent": "text-neon-blue",
-  "Reading Agent": "text-neon-purple",
-  "Analysis Agent": "text-neon-orange",
-  "Synthesis Agent": "text-neon-pink",
-  "Report Output": "text-neon-green",
-  "System": "text-muted-foreground",
-};
-
 export function ExecutionLog({ logs }: ExecutionLogProps) {
+  const { t, i18n } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const agentColors: Record<string, string> = {
+    "Task Input": "text-primary",
+    "任务输入": "text-primary",
+    "Search Agent": "text-neon-blue",
+    "搜索智能体": "text-neon-blue",
+    "Reading Agent": "text-neon-purple",
+    "阅读智能体": "text-neon-purple",
+    "Analysis Agent": "text-neon-orange",
+    "分析智能体": "text-neon-orange",
+    "Synthesis Agent": "text-neon-pink",
+    "综合智能体": "text-neon-pink",
+    "Report Output": "text-neon-green",
+    "报告输出": "text-neon-green",
+    "System": "text-muted-foreground",
+    "系统": "text-muted-foreground",
+  };
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -49,8 +58,8 @@ export function ExecutionLog({ logs }: ExecutionLogProps) {
           {logs.length === 0 ? (
             <div className="h-full flex items-center justify-center text-muted-foreground py-20">
               <div className="text-center">
-                <p className="text-sm">Waiting for execution...</p>
-                <p className="text-xs mt-1 opacity-60">Run agents to see logs here</p>
+                <p className="text-sm">{t("agentLab.log.waiting")}</p>
+                <p className="text-xs mt-1 opacity-60">{t("agentLab.log.waitingHint")}</p>
               </div>
             </div>
           ) : (
@@ -88,7 +97,7 @@ export function ExecutionLog({ logs }: ExecutionLogProps) {
           {logs.length > 0 && (
             <div className="flex items-center gap-2 text-muted-foreground/60 pt-2">
               <span className="inline-block w-2 h-4 bg-primary animate-pulse" />
-              <span className="text-xs">Ready for input</span>
+              <span className="text-xs">{t("agentLab.log.ready")}</span>
             </div>
           )}
         </div>

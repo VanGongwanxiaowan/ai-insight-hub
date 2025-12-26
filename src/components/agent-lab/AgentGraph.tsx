@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import {
@@ -32,12 +33,12 @@ const agentIcons: Record<string, typeof Search> = {
 };
 
 const agentPositions = [
-  { x: 50, y: 40 },   // input
-  { x: 150, y: 80 },  // search
-  { x: 250, y: 40 },  // reading
-  { x: 350, y: 80 },  // analysis
-  { x: 450, y: 40 },  // synthesis
-  { x: 550, y: 80 },  // output
+  { x: 50, y: 40 },
+  { x: 150, y: 80 },
+  { x: 250, y: 40 },
+  { x: 350, y: 80 },
+  { x: 450, y: 40 },
+  { x: 550, y: 80 },
 ];
 
 const edges = [
@@ -49,6 +50,8 @@ const edges = [
 ];
 
 export function AgentGraph({ agents, isRunning }: AgentGraphProps) {
+  const { t } = useTranslation();
+
   const statusColors = useMemo(() => ({
     idle: {
       bg: "bg-secondary",
@@ -111,7 +114,6 @@ export function AgentGraph({ agents, isRunning }: AgentGraphProps) {
           const toAgent = agents[edge.to];
           const isActive = fromAgent?.status === "complete" || toAgent?.status === "working";
           
-          // Calculate control points for curved path
           const midX = (from.x + to.x) / 2;
           const midY = (from.y + to.y) / 2 + 15;
           
@@ -128,7 +130,6 @@ export function AgentGraph({ agents, isRunning }: AgentGraphProps) {
                   isActive && "animate-pulse"
                 )}
               />
-              {/* Animated dot on active edges */}
               {isActive && (
                 <circle r="4" fill="hsl(var(--neon-green))">
                   <animateMotion
@@ -177,7 +178,6 @@ export function AgentGraph({ agents, isRunning }: AgentGraphProps) {
                   {agent.name}
                 </span>
                 
-                {/* Status Indicator */}
                 <div
                   className={cn(
                     "absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-card",
@@ -202,15 +202,15 @@ export function AgentGraph({ agents, isRunning }: AgentGraphProps) {
       <div className="absolute bottom-3 right-3 flex items-center gap-4 text-xs">
         <div className="flex items-center gap-1.5">
           <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground" />
-          <span className="text-muted-foreground">Idle</span>
+          <span className="text-muted-foreground">{t("agentLab.status.idle")}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="h-2.5 w-2.5 rounded-full bg-neon-green animate-pulse" />
-          <span className="text-muted-foreground">Working</span>
+          <span className="text-muted-foreground">{t("agentLab.status.working")}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="h-2.5 w-2.5 rounded-full bg-primary" />
-          <span className="text-muted-foreground">Complete</span>
+          <span className="text-muted-foreground">{t("agentLab.status.complete")}</span>
         </div>
       </div>
     </div>

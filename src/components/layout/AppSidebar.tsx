@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Compass,
   Library,
@@ -18,20 +18,21 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const navItems = [
-  { title: "Discovery", url: "/", icon: Compass },
-  { title: "My Library", url: "/library", icon: Library },
-  { title: "Agent Lab", url: "/agent-lab", icon: FlaskConical },
-  { title: "Settings", url: "/settings", icon: Settings },
-];
-
 interface AppSidebarProps {
   collapsed: boolean;
   onToggle: () => void;
 }
 
 export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
+  const { t } = useTranslation();
   const location = useLocation();
+
+  const navItems = [
+    { title: t("nav.discovery"), url: "/", icon: Compass },
+    { title: t("nav.library"), url: "/library", icon: Library },
+    { title: t("nav.agentLab"), url: "/agent-lab", icon: FlaskConical },
+    { title: t("nav.settings"), url: "/settings", icon: Settings },
+  ];
 
   return (
     <aside
@@ -119,16 +120,16 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
           <Avatar className="h-9 w-9 border border-border">
             <AvatarImage src="/placeholder.svg" alt="User" />
             <AvatarFallback className="bg-primary/10 text-primary text-sm font-medium">
-              JD
+              {t("user.name").slice(0, 2)}
             </AvatarFallback>
           </Avatar>
           {!collapsed && (
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground truncate">
-                John Doe
+                {t("user.name")}
               </p>
               <p className="text-xs text-muted-foreground truncate">
-                john@research.io
+                {t("user.email")}
               </p>
             </div>
           )}

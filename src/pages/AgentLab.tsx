@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Play,
   Square,
@@ -16,7 +16,6 @@ import {
 import { AgentGraph } from "@/components/agent-lab/AgentGraph";
 import { ExecutionLog, LogEntry } from "@/components/agent-lab/ExecutionLog";
 import { ResultView } from "@/components/agent-lab/ResultView";
-import { cn } from "@/lib/utils";
 
 type AgentStatus = "idle" | "working" | "complete" | "error";
 
@@ -27,19 +26,21 @@ interface AgentState {
   progress?: number;
 }
 
-const initialAgents: AgentState[] = [
-  { id: "input", name: "Task Input", status: "idle" },
-  { id: "search", name: "Search Agent", status: "idle" },
-  { id: "reading", name: "Reading Agent", status: "idle" },
-  { id: "analysis", name: "Analysis Agent", status: "idle" },
-  { id: "synthesis", name: "Synthesis Agent", status: "idle" },
-  { id: "output", name: "Report Output", status: "idle" },
-];
-
 export default function AgentLab() {
+  const { t, i18n } = useTranslation();
+
+  const getInitialAgents = (): AgentState[] => [
+    { id: "input", name: t("agentLab.agents.taskInput"), status: "idle" },
+    { id: "search", name: t("agentLab.agents.searchAgent"), status: "idle" },
+    { id: "reading", name: t("agentLab.agents.readingAgent"), status: "idle" },
+    { id: "analysis", name: t("agentLab.agents.analysisAgent"), status: "idle" },
+    { id: "synthesis", name: t("agentLab.agents.synthesisAgent"), status: "idle" },
+    { id: "output", name: t("agentLab.agents.reportOutput"), status: "idle" },
+  ];
+
   const [taskInput, setTaskInput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
-  const [agents, setAgents] = useState<AgentState[]>(initialAgents);
+  const [agents, setAgents] = useState<AgentState[]>(getInitialAgents());
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [result, setResult] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("graph");
@@ -62,77 +63,137 @@ export default function AgentLab() {
   }, []);
 
   const simulateExecution = useCallback(async () => {
+    const isZh = i18n.language === 'zh';
     setIsRunning(true);
     setLogs([]);
     setResult(null);
-    setAgents(initialAgents);
+    setAgents(getInitialAgents());
+
+    const agentNames = {
+      input: isZh ? "任务输入" : "Task Input",
+      search: isZh ? "搜索智能体" : "Search Agent",
+      reading: isZh ? "阅读智能体" : "Reading Agent",
+      analysis: isZh ? "分析智能体" : "Analysis Agent",
+      synthesis: isZh ? "综合智能体" : "Synthesis Agent",
+      output: isZh ? "报告输出" : "Report Output",
+      system: isZh ? "系统" : "System",
+    };
 
     // Task Input
     updateAgentStatus("input", "working");
-    addLog("Task Input", "Received research task: " + taskInput.slice(0, 50) + "...", "info");
+    addLog(agentNames.input, isZh ? `收到研究任务: ${taskInput.slice(0, 50)}...` : `Received research task: ${taskInput.slice(0, 50)}...`, "info");
     await new Promise((r) => setTimeout(r, 800));
     updateAgentStatus("input", "complete");
-    addLog("Task Input", "Task parsed and ready for processing", "success");
+    addLog(agentNames.input, isZh ? "任务解析完成，准备处理" : "Task parsed and ready for processing", "success");
 
     // Search Agent
     updateAgentStatus("search", "working");
-    addLog("Search Agent", "Initializing search across academic databases...", "info");
+    addLog(agentNames.search, isZh ? "正在初始化学术数据库搜索..." : "Initializing search across academic databases...", "info");
     await new Promise((r) => setTimeout(r, 1000));
-    addLog("Search Agent", "Querying arXiv for relevant papers...", "info");
+    addLog(agentNames.search, isZh ? "正在查询 arXiv 相关论文..." : "Querying arXiv for relevant papers...", "info");
     await new Promise((r) => setTimeout(r, 1200));
-    addLog("Search Agent", "Found 12 potentially relevant papers", "success");
+    addLog(agentNames.search, isZh ? "找到 12 篇潜在相关论文" : "Found 12 potentially relevant papers", "success");
     await new Promise((r) => setTimeout(r, 800));
-    addLog("Search Agent", "Filtering by relevance score > 0.8...", "info");
+    addLog(agentNames.search, isZh ? "按相关性评分 > 0.8 过滤..." : "Filtering by relevance score > 0.8...", "info");
     await new Promise((r) => setTimeout(r, 600));
-    addLog("Search Agent", "Selected 5 highly relevant papers for analysis", "success");
+    addLog(agentNames.search, isZh ? "筛选出 5 篇高度相关论文进行分析" : "Selected 5 highly relevant papers for analysis", "success");
     updateAgentStatus("search", "complete");
 
     // Reading Agent
     updateAgentStatus("reading", "working");
-    addLog("Reading Agent", "Beginning paper analysis...", "info");
+    addLog(agentNames.reading, isZh ? "开始论文分析..." : "Beginning paper analysis...", "info");
     await new Promise((r) => setTimeout(r, 1000));
-    addLog("Reading Agent", "Processing: 'Efficient Fine-Tuning of Large Language Models'", "info");
+    addLog(agentNames.reading, isZh ? "处理中: 《大型语言模型的高效微调》" : "Processing: 'Efficient Fine-Tuning of Large Language Models'", "info");
     await new Promise((r) => setTimeout(r, 1200));
-    addLog("Reading Agent", "Processing: 'LoRA: Low-Rank Adaptation of LLMs'", "info");
+    addLog(agentNames.reading, isZh ? "处理中: 《LoRA: 大型语言模型的低秩适应》" : "Processing: 'LoRA: Low-Rank Adaptation of LLMs'", "info");
     await new Promise((r) => setTimeout(r, 1000));
-    addLog("Reading Agent", "Processing: 'QLoRA: Efficient Finetuning of Quantized LLMs'", "info");
+    addLog(agentNames.reading, isZh ? "处理中: 《QLoRA: 量化大型语言模型的高效微调》" : "Processing: 'QLoRA: Efficient Finetuning of Quantized LLMs'", "info");
     await new Promise((r) => setTimeout(r, 800));
-    addLog("Reading Agent", "Extracted key findings from 5 papers", "success");
+    addLog(agentNames.reading, isZh ? "从 5 篇论文中提取了关键发现" : "Extracted key findings from 5 papers", "success");
     updateAgentStatus("reading", "complete");
 
     // Analysis Agent
     updateAgentStatus("analysis", "working");
-    addLog("Analysis Agent", "Comparing methodologies across papers...", "info");
+    addLog(agentNames.analysis, isZh ? "正在比较各论文的方法论..." : "Comparing methodologies across papers...", "info");
     await new Promise((r) => setTimeout(r, 1500));
-    addLog("Analysis Agent", "Identifying common patterns in fine-tuning approaches", "info");
+    addLog(agentNames.analysis, isZh ? "识别微调方法的共同模式" : "Identifying common patterns in fine-tuning approaches", "info");
     await new Promise((r) => setTimeout(r, 1200));
-    addLog("Analysis Agent", "Building comparison matrix...", "info");
+    addLog(agentNames.analysis, isZh ? "构建比较矩阵..." : "Building comparison matrix...", "info");
     await new Promise((r) => setTimeout(r, 1000));
-    addLog("Analysis Agent", "Analysis complete: 8 key differentiators identified", "success");
+    addLog(agentNames.analysis, isZh ? "分析完成: 识别出 8 个关键差异点" : "Analysis complete: 8 key differentiators identified", "success");
     updateAgentStatus("analysis", "complete");
 
     // Synthesis Agent
     updateAgentStatus("synthesis", "working");
-    addLog("Synthesis Agent", "Synthesizing findings into coherent report...", "info");
+    addLog(agentNames.synthesis, isZh ? "正在将发现综合为连贯报告..." : "Synthesizing findings into coherent report...", "info");
     await new Promise((r) => setTimeout(r, 1500));
-    addLog("Synthesis Agent", "Generating executive summary...", "info");
+    addLog(agentNames.synthesis, isZh ? "生成执行摘要..." : "Generating executive summary...", "info");
     await new Promise((r) => setTimeout(r, 1200));
-    addLog("Synthesis Agent", "Adding methodology comparison table...", "info");
+    addLog(agentNames.synthesis, isZh ? "添加方法论比较表格..." : "Adding methodology comparison table...", "info");
     await new Promise((r) => setTimeout(r, 1000));
-    addLog("Synthesis Agent", "Formatting citations and references...", "info");
+    addLog(agentNames.synthesis, isZh ? "格式化引用和参考文献..." : "Formatting citations and references...", "info");
     await new Promise((r) => setTimeout(r, 800));
-    addLog("Synthesis Agent", "Report synthesis complete", "success");
+    addLog(agentNames.synthesis, isZh ? "报告综合完成" : "Report synthesis complete", "success");
     updateAgentStatus("synthesis", "complete");
 
     // Output
     updateAgentStatus("output", "working");
-    addLog("Report Output", "Finalizing research report...", "info");
+    addLog(agentNames.output, isZh ? "正在完成研究报告..." : "Finalizing research report...", "info");
     await new Promise((r) => setTimeout(r, 800));
     updateAgentStatus("output", "complete");
-    addLog("Report Output", "Research report ready for review", "success");
+    addLog(agentNames.output, isZh ? "研究报告已准备好供审阅" : "Research report ready for review", "success");
 
-    // Set result
-    setResult(`# Fine-Tuning Methods Comparison: Llama 3 vs Mistral
+    // Set result based on language
+    if (isZh) {
+      setResult(`# 微调方法对比: Llama 3 vs Mistral
+
+## 执行摘要
+
+本研究报告比较了 Llama 3 和 Mistral 大型语言模型的微调方法，分析了它们的方法、效率和实际应用。
+
+## 主要发现
+
+### 1. 架构差异
+
+**Llama 3:**
+- 使用分组查询注意力 (GQA) 以提高效率
+- 支持最高 8K tokens 的上下文长度
+- 针对指令遵循任务进行优化
+
+**Mistral:**
+- 实现滑动窗口注意力 (SWA)
+- 原生支持 32K 上下文长度
+- 在推理任务上表现出色
+
+### 2. 微调方法
+
+| 方法 | Llama 3 支持 | Mistral 支持 | 内存效率 |
+|------|-------------|-------------|---------|
+| 全量微调 | ✓ | ✓ | 低 |
+| LoRA | ✓ | ✓ | 高 |
+| QLoRA | ✓ | ✓ | 很高 |
+| 适配器微调 | ✓ | 有限 | 高 |
+
+### 3. 推荐方法
+
+**对于 Llama 3:**
+- 在内存受限环境中使用 QLoRA
+- 全量微调在领域特定任务上效果最佳
+- LoRA 推荐秩: 16-64
+
+**对于 Mistral:**
+- 使用较低秩 (8-16) 的 LoRA 即可获得优秀效果
+- 滑动窗口注意力在微调时需要特殊处理
+- 对于长上下文考虑使用梯度检查点
+
+## 结论
+
+两个模型都提供了强大的微调能力，但选择取决于您的具体用例。Llama 3 在指令遵循场景中表现出色，而 Mistral 开箱即用提供更好的长上下文性能。
+
+---
+*报告由 AI 研究智能体生成 • 分析了 5 篇论文 • 搜索了 3 个数据库*`);
+    } else {
+      setResult(`# Fine-Tuning Methods Comparison: Llama 3 vs Mistral
 
 ## Executive Summary
 
@@ -179,10 +240,11 @@ Both models offer robust fine-tuning capabilities, but the choice depends on you
 
 ---
 *Report generated by AI Research Agents • 5 papers analyzed • 3 databases searched*`);
+    }
 
     setActiveTab("result");
     setIsRunning(false);
-  }, [taskInput, addLog, updateAgentStatus]);
+  }, [taskInput, addLog, updateAgentStatus, i18n.language, t]);
 
   const handleRun = () => {
     if (!taskInput.trim()) return;
@@ -191,12 +253,12 @@ Both models offer robust fine-tuning capabilities, but the choice depends on you
 
   const handleStop = () => {
     setIsRunning(false);
-    addLog("System", "Execution stopped by user", "warning");
+    addLog(i18n.language === 'zh' ? "系统" : "System", i18n.language === 'zh' ? "用户停止了执行" : "Execution stopped by user", "warning");
   };
 
   const handleReset = () => {
     setIsRunning(false);
-    setAgents(initialAgents);
+    setAgents(getInitialAgents());
     setLogs([]);
     setResult(null);
     setTaskInput("");
@@ -207,10 +269,8 @@ Both models offer robust fine-tuning capabilities, but the choice depends on you
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Agent Workbench</h1>
-          <p className="text-muted-foreground mt-1">
-            Assign complex research tasks to a team of AI agents
-          </p>
+          <h1 className="text-2xl font-bold text-foreground">{t("agentLab.title")}</h1>
+          <p className="text-muted-foreground mt-1">{t("agentLab.subtitle")}</p>
         </div>
         <div className="flex items-center gap-2">
           {!isRunning ? (
@@ -220,7 +280,7 @@ Both models offer robust fine-tuning capabilities, but the choice depends on you
               className="bg-neon-green/20 text-neon-green hover:bg-neon-green/30 border border-neon-green/30"
             >
               <Play className="h-4 w-4 mr-2" />
-              Run Agents
+              {t("agentLab.runAgents")}
             </Button>
           ) : (
             <Button
@@ -228,7 +288,7 @@ Both models offer robust fine-tuning capabilities, but the choice depends on you
               className="bg-destructive/20 text-destructive hover:bg-destructive/30 border border-destructive/30"
             >
               <Square className="h-4 w-4 mr-2" />
-              Stop
+              {t("agentLab.stop")}
             </Button>
           )}
           <Button
@@ -237,7 +297,7 @@ Both models offer robust fine-tuning capabilities, but the choice depends on you
             className="text-muted-foreground hover:text-foreground"
           >
             <RotateCcw className="h-4 w-4 mr-2" />
-            Reset
+            {t("agentLab.reset")}
           </Button>
         </div>
       </div>
@@ -247,14 +307,14 @@ Both models offer robust fine-tuning capabilities, but the choice depends on you
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" />
-            Research Task
+            {t("agentLab.task.title")}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <Textarea
             value={taskInput}
             onChange={(e) => setTaskInput(e.target.value)}
-            placeholder="What do you want to research? (e.g., 'Compare the fine-tuning methods of Llama 3 and Mistral')"
+            placeholder={t("agentLab.task.placeholder")}
             className="min-h-[100px] bg-secondary/50 border-border focus:border-primary resize-none"
             disabled={isRunning}
           />
@@ -268,7 +328,7 @@ Both models offer robust fine-tuning capabilities, but the choice depends on you
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
               <Network className="h-4 w-4 text-neon-purple" />
-              Agent Pipeline
+              {t("agentLab.pipeline.title")}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
@@ -286,14 +346,14 @@ Both models offer robust fine-tuning capabilities, but the choice depends on you
                   className="flex-1 data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
                 >
                   <Terminal className="h-4 w-4 mr-2" />
-                  Execution Log
+                  {t("agentLab.tabs.executionLog")}
                 </TabsTrigger>
                 <TabsTrigger
                   value="result"
                   className="flex-1 data-[state=active]:bg-neon-green/20 data-[state=active]:text-neon-green"
                 >
                   <FileText className="h-4 w-4 mr-2" />
-                  Result
+                  {t("agentLab.tabs.result")}
                 </TabsTrigger>
               </TabsList>
             </CardHeader>
