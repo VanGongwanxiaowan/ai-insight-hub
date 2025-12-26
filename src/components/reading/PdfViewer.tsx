@@ -1,11 +1,7 @@
 import { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useReading } from "@/pages/Reading";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Lightbulb,
   FileText,
@@ -124,6 +120,7 @@ We analyze the contribution of each component:
 ];
 
 export function PdfViewer() {
+  const { t } = useTranslation();
   const { sendToChat, addToNotes } = useReading();
   const [currentPage, setCurrentPage] = useState(1);
   const [zoom, setZoom] = useState(100);
@@ -189,7 +186,7 @@ export function PdfViewer() {
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <span className="text-sm text-muted-foreground min-w-[80px] text-center">
-            Page {currentPage} / {totalPages}
+            {t("reading.page")} {currentPage} / {totalPages}
           </span>
           <Button
             variant="ghost"
@@ -274,7 +271,7 @@ export function PdfViewer() {
                 className="h-8 px-3 text-xs hover:bg-primary/20 hover:text-primary"
               >
                 <Lightbulb className="h-3.5 w-3.5 mr-1.5" />
-                Explain
+                {t("reading.contextMenu.explain")}
               </Button>
               <Button
                 size="sm"
@@ -283,7 +280,7 @@ export function PdfViewer() {
                 className="h-8 px-3 text-xs hover:bg-neon-purple/20 hover:text-neon-purple"
               >
                 <FileText className="h-3.5 w-3.5 mr-1.5" />
-                Summarize
+                {t("reading.contextMenu.summarize")}
               </Button>
               <Button
                 size="sm"
@@ -292,7 +289,7 @@ export function PdfViewer() {
                 className="h-8 px-3 text-xs hover:bg-neon-green/20 hover:text-neon-green"
               >
                 <StickyNote className="h-3.5 w-3.5 mr-1.5" />
-                Save to Notes
+                {t("reading.contextMenu.saveToNotes")}
               </Button>
             </div>
             <div className="w-3 h-3 bg-popover border-b border-r border-border rotate-45 absolute left-1/2 -translate-x-1/2 -bottom-1.5" />

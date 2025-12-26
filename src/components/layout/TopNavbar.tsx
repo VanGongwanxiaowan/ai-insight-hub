@@ -1,7 +1,8 @@
-import { Search, Bell, Command } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Search, Bell } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 
 interface TopNavbarProps {
@@ -9,6 +10,8 @@ interface TopNavbarProps {
 }
 
 export function TopNavbar({ sidebarCollapsed }: TopNavbarProps) {
+  const { t } = useTranslation();
+
   return (
     <header
       className={cn(
@@ -22,7 +25,7 @@ export function TopNavbar({ sidebarCollapsed }: TopNavbarProps) {
           <div className="relative group">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <Input
-              placeholder="Search papers, authors, topics..."
+              placeholder={t("topNav.searchPlaceholder")}
               className="pl-10 pr-16 bg-secondary/50 border-border focus:border-primary focus:ring-1 focus:ring-primary/20 h-10"
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs text-muted-foreground">
@@ -42,9 +45,12 @@ export function TopNavbar({ sidebarCollapsed }: TopNavbarProps) {
           <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full border border-primary/20">
             <div className="h-2 w-2 rounded-full bg-primary animate-pulse-glow" />
             <span className="text-xs font-medium text-primary">
-              42 AI Credits
+              42 {t("topNav.aiCredits")}
             </span>
           </div>
+
+          {/* Language Switcher */}
+          <LanguageSwitcher />
 
           {/* Notifications */}
           <Button

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useReading, ChatMessage } from "@/pages/Reading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,8 @@ interface KnowledgeAssistantProps {
 }
 
 export function KnowledgeAssistant({ activeTab, onTabChange }: KnowledgeAssistantProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="h-full flex flex-col bg-card/30 border-l border-border">
       <Tabs value={activeTab} onValueChange={onTabChange} className="flex-1 flex flex-col">
@@ -39,21 +42,21 @@ export function KnowledgeAssistant({ activeTab, onTabChange }: KnowledgeAssistan
               className="flex-1 data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
             >
               <MessageSquare className="h-4 w-4 mr-2" />
-              Chat
+              {t("reading.chat.title")}
             </TabsTrigger>
             <TabsTrigger
               value="notes"
               className="flex-1 data-[state=active]:bg-neon-green/20 data-[state=active]:text-neon-green"
             >
               <StickyNote className="h-4 w-4 mr-2" />
-              Notes
+              {t("reading.notes.title")}
             </TabsTrigger>
             <TabsTrigger
               value="analysis"
               className="flex-1 data-[state=active]:bg-neon-purple/20 data-[state=active]:text-neon-purple"
             >
               <Brain className="h-4 w-4 mr-2" />
-              Deep Analysis
+              {t("reading.analysis.title")}
             </TabsTrigger>
           </TabsList>
         </div>
@@ -75,6 +78,7 @@ export function KnowledgeAssistant({ activeTab, onTabChange }: KnowledgeAssistan
 }
 
 function ChatTab() {
+  const { t, i18n } = useTranslation();
   const { chatMessages, setChatMessages } = useReading();
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -100,7 +104,8 @@ function ChatTab() {
     setInput("");
     setIsLoading(true);
 
-    // Simulate thinking
+    const isZh = i18n.language === 'zh';
+
     setTimeout(() => {
       const thinkingMessage: ChatMessage = {
         id: crypto.randomUUID(),
@@ -108,23 +113,21 @@ function ChatTab() {
         content: "",
         timestamp: new Date(),
         isThinking: true,
-        thinkingSteps: [
-          "Understanding question...",
-          "Searching paper context...",
-          "Analyzing relevant sections...",
-          "Formulating response...",
-        ],
+        thinkingSteps: isZh
+          ? ["理解问题...", "搜索论文上下文...", "分析相关章节...", "生成回答..."]
+          : ["Understanding question...", "Searching paper context...", "Analyzing relevant sections...", "Formulating response..."],
       };
       setChatMessages((prev) => [...prev, thinkingMessage]);
 
-      // Simulate response
       setTimeout(() => {
         setChatMessages((prev) => {
           const filtered = prev.filter((m) => !m.isThinking);
           const response: ChatMessage = {
             id: crypto.randomUUID(),
             role: "assistant",
-            content: `Based on my analysis of the paper, I can help you understand this concept.\n\nThe ReasonAgent framework introduces a novel approach to multi-step reasoning that differs from traditional chain-of-thought in several key ways:\n\n1. **Hierarchical Structure**: Instead of linear reasoning, it uses a tree-based approach\n2. **Dynamic Expansion**: The reasoning depth adapts to problem complexity\n3. **Confidence-based Pruning**: Low-confidence paths are automatically trimmed\n\nWould you like me to elaborate on any of these aspects?`,
+            content: isZh
+              ? `基于我对这篇论文的分析，我可以帮助您理解这个概念。\n\nReasonAgent 框架引入了一种新颖的多步推理方法，与传统的思维链有几个关键区别：\n\n1. **层次结构**：不是线性推理，而是使用基于树的方法\n2. **动态扩展**：推理深度根据问题复杂度自适应调整\n3. **基于置信度的剪枝**：低置信度的路径会被自动修剪\n\n您想让我详细解释其中的任何方面吗？`
+              : `Based on my analysis of the paper, I can help you understand this concept.\n\nThe ReasonAgent framework introduces a novel approach to multi-step reasoning that differs from traditional chain-of-thought in several key ways:\n\n1. **Hierarchical Structure**: Instead of linear reasoning, it uses a tree-based approach\n2. **Dynamic Expansion**: The reasoning depth adapts to problem complexity\n3. **Confidence-based Pruning**: Low-confidence paths are automatically trimmed\n\nWould you like me to elaborate on any of these aspects?`,
             timestamp: new Date(),
           };
           return [...filtered, response];
@@ -143,11 +146,10 @@ function ChatTab() {
               <Sparkles className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-lg font-medium text-foreground mb-2">
-              Knowledge Assistant
+              {t("reading.chat.assistantTitle")}
             </h3>
             <p className="text-sm text-muted-foreground max-w-sm">
-              Ask questions about the paper, or select text in the PDF and click
-              "Explain" to get instant insights.
+              {t("reading.chat.assistantDescription")}
             </p>
           </div>
         ) : (
@@ -170,7 +172,7 @@ function ChatTab() {
                 sendMessage();
               }
             }}
-            placeholder="Ask about the paper..."
+            placeholder={t("reading.chat.placeholder")}
             className="min-h-[44px] max-h-32 resize-none bg-secondary/50 border-border focus:border-primary"
           />
           <Button
@@ -187,6 +189,7 @@ function ChatTab() {
 }
 
 function ChatBubble({ message }: { message: ChatMessage }) {
+  const { t } = useTranslation();
   const [thinkingOpen, setThinkingOpen] = useState(true);
   const isUser = message.role === "user";
 
@@ -206,7 +209,7 @@ function ChatBubble({ message }: { message: ChatMessage }) {
                 <div className="flex items-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin text-primary" />
                   <span className="text-sm text-muted-foreground">
-                    Thinking...
+                    {t("reading.thinking.title")}
                   </span>
                 </div>
                 <ChevronDown
@@ -268,6 +271,7 @@ function ChatBubble({ message }: { message: ChatMessage }) {
 }
 
 function NotesTab() {
+  const { t } = useTranslation();
   const { notes, setNotes, highlights } = useReading();
 
   return (
@@ -275,7 +279,7 @@ function NotesTab() {
       {highlights.length > 0 && (
         <div className="space-y-2">
           <h3 className="text-sm font-medium text-muted-foreground">
-            Highlights ({highlights.length})
+            {t("reading.notes.highlights")} ({highlights.length})
           </h3>
           <div className="space-y-2 max-h-40 overflow-auto">
             {highlights.map((h) => (
@@ -292,12 +296,12 @@ function NotesTab() {
 
       <div className="flex-1 flex flex-col">
         <h3 className="text-sm font-medium text-muted-foreground mb-2">
-          Notes
+          {t("reading.notes.notesLabel")}
         </h3>
         <Textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Start taking notes... Markdown supported.&#10;&#10;Use > for quotes from the paper."
+          placeholder={t("reading.notes.placeholder")}
           className="flex-1 resize-none bg-secondary/50 border-border focus:border-neon-green font-mono text-sm"
         />
       </div>
@@ -306,20 +310,29 @@ function NotesTab() {
 }
 
 function DeepAnalysisTab() {
+  const { t, i18n } = useTranslation();
+  const isZh = i18n.language === 'zh';
+
   const analyses = [
     {
-      title: "Key Contributions",
-      content: "1. Hierarchical thought decomposition framework\n2. Dynamic expansion based on problem complexity\n3. 23% improvement over CoT prompting",
+      title: isZh ? "核心贡献" : "Key Contributions",
+      content: isZh
+        ? "1. 层次化思维分解框架\n2. 基于问题复杂度的动态扩展\n3. 相比 CoT 提示提升 23%"
+        : "1. Hierarchical thought decomposition framework\n2. Dynamic expansion based on problem complexity\n3. 23% improvement over CoT prompting",
       status: "complete",
     },
     {
-      title: "Methodology",
-      content: "Tree-based reasoning with confidence-based pruning. Combines supervised fine-tuning with RL for learning decomposition.",
+      title: isZh ? "方法论" : "Methodology",
+      content: isZh
+        ? "基于树的推理结合置信度剪枝。结合监督微调和强化学习来学习分解策略。"
+        : "Tree-based reasoning with confidence-based pruning. Combines supervised fine-tuning with RL for learning decomposition.",
       status: "complete",
     },
     {
-      title: "Limitations",
-      content: "• Increased computational cost for tree construction\n• Requires training data for decomposition learning\n• May not generalize to all reasoning domains",
+      title: isZh ? "局限性" : "Limitations",
+      content: isZh
+        ? "• 树构建增加了计算成本\n• 需要训练数据来学习分解\n• 可能无法泛化到所有推理领域"
+        : "• Increased computational cost for tree construction\n• Requires training data for decomposition learning\n• May not generalize to all reasoning domains",
       status: "pending",
     },
   ];
@@ -328,11 +341,11 @@ function DeepAnalysisTab() {
     <div className="flex-1 p-4 space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-medium text-foreground">
-          Automated Analysis
+          {t("reading.analysis.automatedAnalysis")}
         </h3>
         <Button size="sm" className="bg-neon-purple/20 text-neon-purple hover:bg-neon-purple/30 border-0">
           <Brain className="h-4 w-4 mr-1" />
-          Run Analysis
+          {t("reading.analysis.runAnalysis")}
         </Button>
       </div>
 

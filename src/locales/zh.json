@@ -1,0 +1,192 @@
+{
+  "common": {
+    "search": "搜索",
+    "save": "保存",
+    "cancel": "取消",
+    "confirm": "确认",
+    "delete": "删除",
+    "edit": "编辑",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "viewAll": "查看全部",
+    "back": "返回",
+    "close": "关闭",
+    "copy": "复制",
+    "download": "下载",
+    "copied": "已复制"
+  },
+  "nav": {
+    "discovery": "发现",
+    "library": "我的文库",
+    "agentLab": "智能工作台",
+    "settings": "设置"
+  },
+  "topNav": {
+    "searchPlaceholder": "搜索论文、作者、主题...",
+    "aiCredits": "AI 积分"
+  },
+  "discovery": {
+    "hero": {
+      "badge": "AI 驱动的研究发现",
+      "title": "发现前沿",
+      "titleHighlight": "AI 研究",
+      "description": "搜索海量论文，获取 AI 摘要，紧跟学术前沿"
+    },
+    "search": {
+      "filterAll": "所有字段",
+      "filterTitle": "标题",
+      "filterAuthor": "作者",
+      "filterInstitution": "机构",
+      "placeholder": "搜索论文、作者或主题...",
+      "button": "搜索"
+    },
+    "categories": {
+      "title": "按分类浏览",
+      "clearFilters": "清除筛选",
+      "llm": "大语言模型",
+      "rl": "强化学习",
+      "agents": "智能体",
+      "imageGen": "图像生成",
+      "videoGen": "视频生成",
+      "reasoning": "推理"
+    },
+    "dailyFeed": {
+      "title": "今日 ArXiv 更新",
+      "subtitle": "最近24小时的新论文",
+      "publishedToday": "今日发布",
+      "summarize": "生成摘要",
+      "open": "打开"
+    },
+    "classicPapers": {
+      "title": "经典论文",
+      "subtitle": "塑造现代 AI 的奠基之作"
+    }
+  },
+  "library": {
+    "title": "我的文库",
+    "subtitle": "整理和管理您收藏的论文",
+    "newCollection": "新建收藏夹",
+    "empty": {
+      "title": "暂无论文",
+      "description": "从发现页面开始收藏论文，构建您的研究文库。",
+      "button": "探索论文"
+    }
+  },
+  "agentLab": {
+    "title": "智能工作台",
+    "subtitle": "将复杂研究任务分配给 AI 智能体团队",
+    "runAgents": "启动智能体",
+    "stop": "停止",
+    "reset": "重置",
+    "task": {
+      "title": "研究任务",
+      "placeholder": "您想研究什么？（例如：'比较 Llama 3 和 Mistral 的微调方法'）"
+    },
+    "pipeline": {
+      "title": "智能体流水线"
+    },
+    "agents": {
+      "taskInput": "任务输入",
+      "searchAgent": "搜索智能体",
+      "readingAgent": "阅读智能体",
+      "analysisAgent": "分析智能体",
+      "synthesisAgent": "综合智能体",
+      "reportOutput": "报告输出"
+    },
+    "status": {
+      "idle": "空闲",
+      "working": "工作中",
+      "complete": "完成"
+    },
+    "tabs": {
+      "executionLog": "执行日志",
+      "result": "结果"
+    },
+    "log": {
+      "waiting": "等待执行...",
+      "waitingHint": "启动智能体以查看日志",
+      "ready": "等待输入"
+    },
+    "result": {
+      "title": "研究报告",
+      "noResult": "暂无结果",
+      "noResultHint": "运行智能体流水线以生成报告"
+    }
+  },
+  "reading": {
+    "page": "页",
+    "chat": {
+      "title": "对话",
+      "placeholder": "询问关于这篇论文的问题...",
+      "assistantTitle": "知识助手",
+      "assistantDescription": "询问论文相关问题，或在 PDF 中选择文字点击「解释」获取即时见解。"
+    },
+    "notes": {
+      "title": "笔记",
+      "highlights": "高亮",
+      "notesLabel": "笔记",
+      "placeholder": "开始记录笔记... 支持 Markdown。\n\n使用 > 引用论文内容。"
+    },
+    "analysis": {
+      "title": "深度分析",
+      "automatedAnalysis": "自动分析",
+      "runAnalysis": "运行分析"
+    },
+    "contextMenu": {
+      "explain": "解释",
+      "summarize": "总结",
+      "saveToNotes": "保存到笔记"
+    },
+    "thinking": {
+      "title": "思考中...",
+      "analyzing": "分析选中文本...",
+      "searching": "搜索论文上下文...",
+      "crossRef": "交叉引用摘要...",
+      "generating": "生成解释..."
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "subtitle": "管理您的账户和偏好",
+    "sections": {
+      "profile": {
+        "title": "个人资料",
+        "description": "管理您的账户信息"
+      },
+      "notifications": {
+        "title": "通知",
+        "description": "配置提醒偏好"
+      },
+      "appearance": {
+        "title": "外观",
+        "description": "自定义您的体验"
+      },
+      "privacy": {
+        "title": "隐私",
+        "description": "控制您的数据和隐私"
+      },
+      "billing": {
+        "title": "账单",
+        "description": "管理订阅和积分"
+      }
+    },
+    "quickSettings": "快捷设置",
+    "autoSummarize": {
+      "title": "自动生成摘要",
+      "description": "打开论文时自动生成摘要"
+    },
+    "emailDigest": {
+      "title": "每周邮件摘要",
+      "description": "接收精选论文推荐"
+    },
+    "language": {
+      "title": "语言",
+      "description": "选择界面语言"
+    }
+  },
+  "user": {
+    "name": "张三",
+    "email": "zhangsan@research.io"
+  }
+}

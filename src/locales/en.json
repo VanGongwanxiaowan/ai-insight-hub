@@ -1,0 +1,192 @@
+{
+  "common": {
+    "search": "Search",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "viewAll": "View All",
+    "back": "Back",
+    "close": "Close",
+    "copy": "Copy",
+    "download": "Download",
+    "copied": "Copied"
+  },
+  "nav": {
+    "discovery": "Discovery",
+    "library": "My Library",
+    "agentLab": "Agent Lab",
+    "settings": "Settings"
+  },
+  "topNav": {
+    "searchPlaceholder": "Search papers, authors, topics...",
+    "aiCredits": "AI Credits"
+  },
+  "discovery": {
+    "hero": {
+      "badge": "AI-Powered Research Discovery",
+      "title": "Discover the Future of",
+      "titleHighlight": "AI Research",
+      "description": "Search millions of papers, get AI summaries, and stay ahead of the curve"
+    },
+    "search": {
+      "filterAll": "All Fields",
+      "filterTitle": "Title",
+      "filterAuthor": "Author",
+      "filterInstitution": "Institution",
+      "placeholder": "Search papers, authors, or topics...",
+      "button": "Search"
+    },
+    "categories": {
+      "title": "Browse by Category",
+      "clearFilters": "Clear filters",
+      "llm": "LLM",
+      "rl": "Reinforcement Learning",
+      "agents": "Agents",
+      "imageGen": "Image Gen",
+      "videoGen": "Video Gen",
+      "reasoning": "Reasoning"
+    },
+    "dailyFeed": {
+      "title": "Today's ArXiv Updates",
+      "subtitle": "Fresh papers from the last 24 hours",
+      "publishedToday": "Published Today",
+      "summarize": "Summarize",
+      "open": "Open"
+    },
+    "classicPapers": {
+      "title": "Classic Papers",
+      "subtitle": "Foundational works that shaped modern AI"
+    }
+  },
+  "library": {
+    "title": "My Library",
+    "subtitle": "Organize and manage your saved papers",
+    "newCollection": "New Collection",
+    "empty": {
+      "title": "No papers yet",
+      "description": "Start building your research library by saving papers from the Discovery page.",
+      "button": "Explore Papers"
+    }
+  },
+  "agentLab": {
+    "title": "Agent Workbench",
+    "subtitle": "Assign complex research tasks to a team of AI agents",
+    "runAgents": "Run Agents",
+    "stop": "Stop",
+    "reset": "Reset",
+    "task": {
+      "title": "Research Task",
+      "placeholder": "What do you want to research? (e.g., 'Compare the fine-tuning methods of Llama 3 and Mistral')"
+    },
+    "pipeline": {
+      "title": "Agent Pipeline"
+    },
+    "agents": {
+      "taskInput": "Task Input",
+      "searchAgent": "Search Agent",
+      "readingAgent": "Reading Agent",
+      "analysisAgent": "Analysis Agent",
+      "synthesisAgent": "Synthesis Agent",
+      "reportOutput": "Report Output"
+    },
+    "status": {
+      "idle": "Idle",
+      "working": "Working",
+      "complete": "Complete"
+    },
+    "tabs": {
+      "executionLog": "Execution Log",
+      "result": "Result"
+    },
+    "log": {
+      "waiting": "Waiting for execution...",
+      "waitingHint": "Run agents to see logs here",
+      "ready": "Ready for input"
+    },
+    "result": {
+      "title": "Research Report",
+      "noResult": "No results yet",
+      "noResultHint": "Run the agent pipeline to generate a report"
+    }
+  },
+  "reading": {
+    "page": "Page",
+    "chat": {
+      "title": "Chat",
+      "placeholder": "Ask about the paper...",
+      "assistantTitle": "Knowledge Assistant",
+      "assistantDescription": "Ask questions about the paper, or select text in the PDF and click \"Explain\" to get instant insights."
+    },
+    "notes": {
+      "title": "Notes",
+      "highlights": "Highlights",
+      "notesLabel": "Notes",
+      "placeholder": "Start taking notes... Markdown supported.\n\nUse > for quotes from the paper."
+    },
+    "analysis": {
+      "title": "Deep Analysis",
+      "automatedAnalysis": "Automated Analysis",
+      "runAnalysis": "Run Analysis"
+    },
+    "contextMenu": {
+      "explain": "Explain",
+      "summarize": "Summarize",
+      "saveToNotes": "Save to Notes"
+    },
+    "thinking": {
+      "title": "Thinking...",
+      "analyzing": "Analyzing selected text...",
+      "searching": "Searching paper context...",
+      "crossRef": "Cross-referencing with abstract...",
+      "generating": "Generating explanation..."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and preferences",
+    "sections": {
+      "profile": {
+        "title": "Profile",
+        "description": "Manage your account details"
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Configure alert preferences"
+      },
+      "appearance": {
+        "title": "Appearance",
+        "description": "Customize your experience"
+      },
+      "privacy": {
+        "title": "Privacy",
+        "description": "Control your data and privacy"
+      },
+      "billing": {
+        "title": "Billing",
+        "description": "Manage subscription and credits"
+      }
+    },
+    "quickSettings": "Quick Settings",
+    "autoSummarize": {
+      "title": "Auto-summarize papers",
+      "description": "Automatically generate summaries when opening papers"
+    },
+    "emailDigest": {
+      "title": "Weekly email digest",
+      "description": "Receive curated paper recommendations"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose interface language"
+    }
+  },
+  "user": {
+    "name": "John Doe",
+    "email": "john@research.io"
+  }
+}

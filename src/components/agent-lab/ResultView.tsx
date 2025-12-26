@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { FileText, Download, Copy, Check } from "lucide-react";
@@ -9,6 +10,7 @@ interface ResultViewProps {
 }
 
 export function ResultView({ result }: ResultViewProps) {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
@@ -17,8 +19,8 @@ export function ResultView({ result }: ResultViewProps) {
     await navigator.clipboard.writeText(result);
     setCopied(true);
     toast({
-      title: "Copied to clipboard",
-      description: "The research report has been copied.",
+      title: t("common.copied"),
+      description: t("agentLab.result.title"),
     });
     setTimeout(() => setCopied(false), 2000);
   };
@@ -33,8 +35,8 @@ export function ResultView({ result }: ResultViewProps) {
     a.click();
     URL.revokeObjectURL(url);
     toast({
-      title: "Report downloaded",
-      description: "The research report has been saved as Markdown.",
+      title: t("common.download"),
+      description: t("agentLab.result.title"),
     });
   };
 
@@ -42,9 +44,9 @@ export function ResultView({ result }: ResultViewProps) {
     return (
       <div className="h-[300px] flex flex-col items-center justify-center text-muted-foreground bg-background/50 border-t border-border">
         <FileText className="h-12 w-12 mb-4 opacity-30" />
-        <p className="text-sm">No results yet</p>
+        <p className="text-sm">{t("agentLab.result.noResult")}</p>
         <p className="text-xs mt-1 opacity-60">
-          Run the agent pipeline to generate a report
+          {t("agentLab.result.noResultHint")}
         </p>
       </div>
     );
@@ -55,7 +57,7 @@ export function ResultView({ result }: ResultViewProps) {
       {/* Toolbar */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-border">
         <span className="text-xs text-muted-foreground font-medium">
-          Research Report
+          {t("agentLab.result.title")}
         </span>
         <div className="flex items-center gap-1">
           <Button
@@ -98,7 +100,7 @@ export function ResultView({ result }: ResultViewProps) {
                   if (cells.every(c => c.match(/^[-:]+$/))) {
                     return '';
                   }
-                  const isHeader = match.includes('Method') || match.includes('---');
+                  const isHeader = match.includes('Method') || match.includes('方法') || match.includes('---');
                   const tag = isHeader ? 'th' : 'td';
                   const className = isHeader 
                     ? 'px-3 py-2 text-left text-xs font-medium text-foreground bg-secondary/50'
