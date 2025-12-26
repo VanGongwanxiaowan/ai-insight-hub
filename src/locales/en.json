@@ -18,6 +18,7 @@
   },
   "nav": {
     "discovery": "Discovery",
+    "academicCircle": "Academic Circle",
     "classicHall": "Classic Hall",
     "notebook": "Notebook",
     "agentLab": "Agent Lab",
@@ -220,5 +221,18 @@
   "user": {
     "name": "John Doe",
     "email": "john@research.io"
+  },
+  "academicCircle": {
+    "title": "Academic Circle",
+    "subtitle": "Discover and engage with the academic community",
+    "trendingScholars": "Trending Scholars",
+    "hotDiscussions": "Hot Discussions",
+    "notes": "notes",
+    "comments": "comments",
+    "actions": {
+      "postedanoteon": "posted a note on",
+      "sharedinsightsabout": "shared insights about",
+      "commentedon": "commented on"
+    }
   }
 }

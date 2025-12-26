@@ -18,6 +18,7 @@
   },
   "nav": {
     "discovery": "发现",
+    "academicCircle": "学术圈",
     "classicHall": "经典殿堂",
     "notebook": "笔记本",
     "agentLab": "智能工作台",
@@ -220,5 +221,18 @@
   "user": {
     "name": "张三",
     "email": "zhangsan@research.io"
+  },
+  "academicCircle": {
+    "title": "学术圈",
+    "subtitle": "发现并参与学术社区的讨论",
+    "trendingScholars": "活跃学者",
+    "hotDiscussions": "热门讨论",
+    "notes": "笔记",
+    "comments": "评论",
+    "actions": {
+      "postedanoteon": "发布了笔记于",
+      "sharedinsightsabout": "分享了见解于",
+      "commentedon": "评论了"
+    }
   }
 }
