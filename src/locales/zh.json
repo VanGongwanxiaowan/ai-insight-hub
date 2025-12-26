@@ -18,9 +18,12 @@
   },
   "nav": {
     "discovery": "发现",
-    "library": "我的文库",
+    "classicHall": "经典殿堂",
+    "notebook": "笔记本",
     "agentLab": "智能工作台",
-    "settings": "设置"
+    "settings": "设置",
+    "tags": "标签",
+    "manageTags": "管理标签"
   },
   "topNav": {
     "searchPlaceholder": "搜索论文、作者、主题...",
@@ -62,6 +65,35 @@
       "title": "经典论文",
       "subtitle": "塑造现代 AI 的奠基之作"
     }
+  },
+  "classicHall": {
+    "badge": "精选收录",
+    "title": "名人堂：AI 奠基研究",
+    "subtitle": "那些改变了人工智能领域的里程碑论文",
+    "searchPlaceholder": "搜索经典论文...",
+    "citedBy": "被引 {{count}}",
+    "legendary": "传奇",
+    "noResults": "未找到符合条件的论文",
+    "eras": {
+      "all": "全部",
+      "pre2017": "2017年前",
+      "2017to2020": "2017-2020",
+      "2021present": "2021至今"
+    }
+  },
+  "notebook": {
+    "title": "笔记本",
+    "subtitle": "管理所有论文笔记",
+    "newNote": "新建笔记",
+    "searchPlaceholder": "搜索笔记...",
+    "starred": "收藏",
+    "allNotes": "全部笔记",
+    "noNotes": "暂无笔记",
+    "selectNote": "选择一个笔记查看详情",
+    "linkedPaper": "关联论文",
+    "lastUpdated": "最后更新",
+    "star": "收藏",
+    "unstar": "取消收藏"
   },
   "library": {
     "title": "我的文库",

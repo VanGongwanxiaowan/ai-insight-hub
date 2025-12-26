@@ -18,9 +18,12 @@
   },
   "nav": {
     "discovery": "Discovery",
-    "library": "My Library",
+    "classicHall": "Classic Hall",
+    "notebook": "Notebook",
     "agentLab": "Agent Lab",
-    "settings": "Settings"
+    "settings": "Settings",
+    "tags": "Tags",
+    "manageTags": "Manage Tags"
   },
   "topNav": {
     "searchPlaceholder": "Search papers, authors, topics...",
@@ -62,6 +65,35 @@
       "title": "Classic Papers",
       "subtitle": "Foundational works that shaped modern AI"
     }
+  },
+  "classicHall": {
+    "badge": "Curated Collection",
+    "title": "The Hall of Fame: Foundational AI Research",
+    "subtitle": "Milestone papers that shaped the field of artificial intelligence",
+    "searchPlaceholder": "Search classics...",
+    "citedBy": "Cited by {{count}}",
+    "legendary": "Legendary",
+    "noResults": "No papers found matching your criteria",
+    "eras": {
+      "all": "All",
+      "pre2017": "Pre-2017",
+      "2017to2020": "2017-2020",
+      "2021present": "2021-Present"
+    }
+  },
+  "notebook": {
+    "title": "Notebook",
+    "subtitle": "Manage all your paper notes",
+    "newNote": "New Note",
+    "searchPlaceholder": "Search notes...",
+    "starred": "Starred",
+    "allNotes": "All Notes",
+    "noNotes": "No notes yet",
+    "selectNote": "Select a note to view details",
+    "linkedPaper": "Linked Paper",
+    "lastUpdated": "Last updated",
+    "star": "Star",
+    "unstar": "Unstar"
   },
   "library": {
     "title": "My Library",
