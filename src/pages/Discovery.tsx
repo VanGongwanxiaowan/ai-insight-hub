@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -287,90 +288,94 @@ export default function Discovery() {
 
         <div className="grid gap-4">
           {todaysPapers.map((paper, index) => (
-            <Card
-              key={paper.id}
-              className="bg-card border-border hover:border-primary/30 transition-all duration-300 cursor-pointer group overflow-hidden"
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              <CardContent className="p-6">
-                <div className="flex flex-col lg:flex-row lg:items-start gap-4">
-                  <div className="flex-1 min-w-0">
-                    {/* Header with badges */}
-                    <div className="flex items-start justify-between gap-4 mb-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        {paper.publishedToday && (
-                          <Badge className="bg-neon-green/20 text-neon-green border border-neon-green/30 text-xs">
-                            Published Today
-                          </Badge>
-                        )}
-                        <span className="text-xs text-muted-foreground font-mono">
-                          arXiv:{paper.arxivId}
+            <Link key={paper.id} to={`/read/${paper.arxivId}`}>
+              <Card
+                className="bg-card border-border hover:border-primary/30 transition-all duration-300 cursor-pointer group overflow-hidden"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex flex-col lg:flex-row lg:items-start gap-4">
+                    <div className="flex-1 min-w-0">
+                      {/* Header with badges */}
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <div className="flex flex-wrap items-center gap-2">
+                          {paper.publishedToday && (
+                            <Badge className="bg-neon-green/20 text-neon-green border border-neon-green/30 text-xs">
+                              Published Today
+                            </Badge>
+                          )}
+                          <span className="text-xs text-muted-foreground font-mono">
+                            arXiv:{paper.arxivId}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-lg font-medium text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2">
+                        {paper.title}
+                      </h3>
+
+                      {/* Authors */}
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                        <Users className="h-4 w-4" />
+                        <span>
+                          {paper.authors.slice(0, 3).join(", ")}
+                          {paper.authors.length > 3 && ` +${paper.authors.length - 3} more`}
                         </span>
+                      </div>
+
+                      {/* Abstract */}
+                      <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                        {paper.abstract}
+                      </p>
+
+                      {/* Categories */}
+                      <div className="flex flex-wrap gap-1.5">
+                        {paper.categories.map((cat) => (
+                          <Badge
+                            key={cat}
+                            variant="outline"
+                            className={cn("text-xs", getCategoryStyle(cat))}
+                          >
+                            {cat}
+                          </Badge>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Title */}
-                    <h3 className="text-lg font-medium text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2">
-                      {paper.title}
-                    </h3>
-
-                    {/* Authors */}
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                      <Users className="h-4 w-4" />
-                      <span>
-                        {paper.authors.slice(0, 3).join(", ")}
-                        {paper.authors.length > 3 && ` +${paper.authors.length - 3} more`}
-                      </span>
-                    </div>
-
-                    {/* Abstract */}
-                    <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                      {paper.abstract}
-                    </p>
-
-                    {/* Categories */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {paper.categories.map((cat) => (
-                        <Badge
-                          key={cat}
-                          variant="outline"
-                          className={cn("text-xs", getCategoryStyle(cat))}
-                        >
-                          {cat}
-                        </Badge>
-                      ))}
+                    {/* Action Buttons */}
+                    <div className="flex lg:flex-col gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                      <Button
+                        size="sm"
+                        className="bg-primary/10 text-primary hover:bg-primary/20 border-0"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <Sparkles className="h-4 w-4 mr-1" />
+                        Summarize
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-muted-foreground hover:text-foreground"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <Bookmark className="h-4 w-4 mr-1" />
+                        Save
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-muted-foreground hover:text-foreground"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <ExternalLink className="h-4 w-4 mr-1" />
+                        Open
+                      </Button>
                     </div>
                   </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex lg:flex-col gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                    <Button
-                      size="sm"
-                      className="bg-primary/10 text-primary hover:bg-primary/20 border-0"
-                    >
-                      <Sparkles className="h-4 w-4 mr-1" />
-                      Summarize
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="text-muted-foreground hover:text-foreground"
-                    >
-                      <Bookmark className="h-4 w-4 mr-1" />
-                      Save
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="text-muted-foreground hover:text-foreground"
-                    >
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      Open
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </section>

@@ -4,7 +4,6 @@ import {
   Compass,
   Library,
   FlaskConical,
-  Podcast,
   Settings,
   ChevronLeft,
   ChevronRight,
@@ -23,7 +22,6 @@ const navItems = [
   { title: "Discovery", url: "/", icon: Compass },
   { title: "My Library", url: "/library", icon: Library },
   { title: "Agent Lab", url: "/agent-lab", icon: FlaskConical },
-  { title: "Digital Podcast", url: "/podcast", icon: Podcast },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 

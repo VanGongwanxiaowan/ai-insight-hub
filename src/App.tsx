@@ -7,8 +7,8 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import Index from "./pages/Index";
 import Library from "./pages/Library";
 import AgentLab from "./pages/AgentLab";
-import Podcast from "./pages/Podcast";
 import Settings from "./pages/Settings";
+import Reading from "./pages/Reading";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -19,16 +19,23 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <MainLayout>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/library" element={<Library />} />
-            <Route path="/agent-lab" element={<AgentLab />} />
-            <Route path="/podcast" element={<Podcast />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </MainLayout>
+        <Routes>
+          <Route path="/read/:id" element={<Reading />} />
+          <Route
+            path="/*"
+            element={
+              <MainLayout>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/library" element={<Library />} />
+                  <Route path="/agent-lab" element={<AgentLab />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </MainLayout>
+            }
+          />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
