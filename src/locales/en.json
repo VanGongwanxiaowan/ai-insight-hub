@@ -19,6 +19,7 @@
   "nav": {
     "discovery": "Discovery",
     "academicCircle": "Academic Circle",
+    "recommendations": "Recommendations",
     "classicHall": "Classic Hall",
     "notebook": "Notebook",
     "agentLab": "Agent Lab",
@@ -250,6 +251,24 @@
       "postedanoteon": "posted a note on",
       "sharedinsightsabout": "shared insights about",
       "commentedon": "commented on"
+    }
+  },
+  "recommendations": {
+    "badge": "Curated Picks",
+    "title": "Paper Recommendations",
+    "subtitle": "Browse classic papers by category, discover cutting-edge research",
+    "trending": "Trending",
+    "hot": "Hot",
+    "citations": "citations",
+    "noResults": "No papers found in this category",
+    "categories": {
+      "all": "All",
+      "agent": "Agent",
+      "aigc": "AIGC",
+      "imageGen": "Image Gen",
+      "videoGen": "Video Gen",
+      "llm": "LLM",
+      "ai": "AI"
     }
   }
 }
