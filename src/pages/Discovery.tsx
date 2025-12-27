@@ -432,6 +432,11 @@ export default function Discovery() {
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
+            <Link to="/classic-hall">
+              <Button variant="ghost" className="text-primary hover:text-primary hover:bg-primary/10">
+                {t("common.viewAll")} <ChevronRight className="ml-1 h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
 
