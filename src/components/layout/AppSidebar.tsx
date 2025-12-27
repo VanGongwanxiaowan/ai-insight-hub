@@ -10,7 +10,7 @@ import {
   ChevronRight,
   Sparkles,
   Tag,
-  Settings2,
+  Heart,
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,21 +21,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Badge } from "@/components/ui/badge";
 
 interface AppSidebarProps {
   collapsed: boolean;
   onToggle: () => void;
 }
-
-// Mock tags data
-const topTags = [
-  { id: "1", name: "LLM", count: 24 },
-  { id: "2", name: "Transformer", count: 18 },
-  { id: "3", name: "RL", count: 12 },
-  { id: "4", name: "Diffusion", count: 9 },
-  { id: "5", name: "Multimodal", count: 7 },
-];
 
 export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
   const { t } = useTranslation();
@@ -48,6 +38,11 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
     { title: t("nav.notebook"), url: "/notebook", icon: BookOpen },
     { title: t("nav.agentLab"), url: "/agent-lab", icon: FlaskConical },
     { title: t("nav.settings"), url: "/settings", icon: Settings },
+  ];
+
+  const managementItems = [
+    { title: t("nav.tagManagement"), url: "/tags", icon: Tag },
+    { title: t("nav.favorites"), url: "/favorites", icon: Heart },
   ];
 
   return (
@@ -126,57 +121,53 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
           return NavItem;
         })}
 
-        {/* Tags Section */}
+        {/* Management Section */}
         {!collapsed && (
           <div className="pt-6 mt-6 border-t border-sidebar-border">
-            <div className="flex items-center justify-between px-3 mb-3">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                {t("nav.tags")}
-              </span>
-              <Tooltip delayDuration={0}>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-6 w-6">
-                    <Settings2 className="h-3.5 w-3.5 text-muted-foreground" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="right">
-                  {t("nav.manageTags")}
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            <div className="space-y-1">
-              {topTags.map((tag) => (
-                <Link
-                  key={tag.id}
-                  to={`/?tag=${tag.name}`}
-                  className="flex items-center justify-between px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors group"
-                >
-                  <span className="flex items-center gap-2 text-sm">
-                    <Tag className="h-3.5 w-3.5" />
-                    {tag.name}
-                  </span>
-                  <Badge variant="secondary" className="text-xs h-5 px-1.5 bg-muted">
-                    {tag.count}
-                  </Badge>
-                </Link>
-              ))}
+            <span className="px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              {t("nav.management")}
+            </span>
+            <div className="mt-3 space-y-1">
+              {managementItems.map((item) => {
+                const isActive = location.pathname === item.url;
+                return (
+                  <Link
+                    key={item.title}
+                    to={item.url}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
+                      isActive
+                        ? "bg-primary/10 text-primary"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                    )}
+                  >
+                    <item.icon className="h-4 w-4" />
+                    <span className="text-sm">{item.title}</span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         )}
 
         {collapsed && (
-          <Tooltip delayDuration={0}>
-            <TooltipTrigger asChild>
-              <div className="mt-6 pt-6 border-t border-sidebar-border">
-                <div className="flex items-center justify-center px-3 py-2.5 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg cursor-pointer">
-                  <Tag className="h-5 w-5" />
-                </div>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="bg-popover border-border">
-              {t("nav.tags")}
-            </TooltipContent>
-          </Tooltip>
+          <div className="mt-6 pt-6 border-t border-sidebar-border space-y-1">
+            {managementItems.map((item) => (
+              <Tooltip key={item.title} delayDuration={0}>
+                <TooltipTrigger asChild>
+                  <Link
+                    to={item.url}
+                    className="flex items-center justify-center px-3 py-2.5 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg"
+                  >
+                    <item.icon className="h-5 w-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right" className="bg-popover border-border">
+                  {item.title}
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
         )}
       </nav>
 

@@ -23,8 +23,25 @@
     "notebook": "笔记本",
     "agentLab": "智能工作台",
     "settings": "设置",
-    "tags": "标签",
-    "manageTags": "管理标签"
+    "management": "管理",
+    "tagManagement": "标签管理",
+    "favorites": "收藏管理"
+  },
+  "tagManager": {
+    "manageTags": "管理标签",
+    "selectTags": "选择标签",
+    "newTagPlaceholder": "输入新标签名称...",
+    "noTags": "暂无标签",
+    "addTag": "添加标签"
+  },
+  "favorites": {
+    "title": "我的收藏",
+    "manage": "管理收藏",
+    "searchPlaceholder": "搜索收藏...",
+    "papers": "论文",
+    "notes": "笔记",
+    "empty": "暂无收藏",
+    "noResults": "未找到匹配的收藏"
   },
   "topNav": {
     "searchPlaceholder": "搜索论文、作者、主题...",

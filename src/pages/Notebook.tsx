@@ -10,7 +10,8 @@ import {
   Trash2,
   Edit3,
   Star,
-  StarOff
+  StarOff,
+  Settings2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,14 +23,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { TagManager, TagItem, TagSelector } from "@/components/TagManager";
+import { FavoriteButton } from "@/components/FavoritesManager";
 
 interface Note {
   id: string;
@@ -40,8 +36,19 @@ interface Note {
   createdAt: Date;
   updatedAt: Date;
   starred: boolean;
-  tags: string[];
+  tagIds: string[];
 }
+
+const initialTags: TagItem[] = [
+  { id: "tag-1", name: "LLM", color: "bg-blue-500", count: 3 },
+  { id: "tag-2", name: "Architecture", color: "bg-green-500", count: 2 },
+  { id: "tag-3", name: "NLP", color: "bg-amber-500", count: 2 },
+  { id: "tag-4", name: "Pre-training", color: "bg-purple-500", count: 1 },
+  { id: "tag-5", name: "Image Gen", color: "bg-rose-500", count: 1 },
+  { id: "tag-6", name: "Math", color: "bg-cyan-500", count: 1 },
+  { id: "tag-7", name: "Research", color: "bg-orange-500", count: 1 },
+  { id: "tag-8", name: "Todo", color: "bg-indigo-500", count: 1 },
+];
 
 const mockNotes: Note[] = [
   {
@@ -53,7 +60,7 @@ const mockNotes: Note[] = [
     createdAt: new Date("2024-01-15"),
     updatedAt: new Date("2024-01-16"),
     starred: true,
-    tags: ["LLM", "Architecture"]
+    tagIds: ["tag-1", "tag-2"]
   },
   {
     id: "2",
@@ -64,7 +71,7 @@ const mockNotes: Note[] = [
     createdAt: new Date("2024-01-20"),
     updatedAt: new Date("2024-01-20"),
     starred: false,
-    tags: ["NLP", "Pre-training"]
+    tagIds: ["tag-3", "tag-4"]
   },
   {
     id: "3",
@@ -75,7 +82,7 @@ const mockNotes: Note[] = [
     createdAt: new Date("2024-02-01"),
     updatedAt: new Date("2024-02-05"),
     starred: true,
-    tags: ["Image Gen", "Math"]
+    tagIds: ["tag-5", "tag-6"]
   },
   {
     id: "4",
@@ -84,23 +91,25 @@ const mockNotes: Note[] = [
     createdAt: new Date("2024-02-10"),
     updatedAt: new Date("2024-02-12"),
     starred: false,
-    tags: ["Research", "Todo"]
+    tagIds: ["tag-7", "tag-8"]
   }
 ];
 
 export default function Notebook() {
   const { t } = useTranslation();
   const [notes, setNotes] = useState<Note[]>(mockNotes);
+  const [tags, setTags] = useState<TagItem[]>(initialTags);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState("");
+  const [selectedTagFilter, setSelectedTagFilter] = useState<string | null>(null);
 
   const filteredNotes = notes.filter(note =>
-    searchQuery === "" ||
+    (searchQuery === "" ||
     note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    note.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    note.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+    note.content.toLowerCase().includes(searchQuery.toLowerCase())) &&
+    (!selectedTagFilter || note.tagIds.includes(selectedTagFilter))
   );
 
   const starredNotes = filteredNotes.filter(n => n.starred);
@@ -110,6 +119,9 @@ export default function Notebook() {
     setNotes(prev => prev.map(n => 
       n.id === noteId ? { ...n, starred: !n.starred } : n
     ));
+    if (selectedNote?.id === noteId) {
+      setSelectedNote(prev => prev ? { ...prev, starred: !prev.starred } : null);
+    }
   };
 
   const deleteNote = (noteId: string) => {
@@ -119,6 +131,19 @@ export default function Notebook() {
     }
   };
 
+  const updateNoteTags = (noteId: string, tagIds: string[]) => {
+    setNotes(prev => prev.map(n => 
+      n.id === noteId ? { ...n, tagIds } : n
+    ));
+    if (selectedNote?.id === noteId) {
+      setSelectedNote(prev => prev ? { ...prev, tagIds } : null);
+    }
+  };
+
+  const handleAddNewTag = (newTag: TagItem) => {
+    setTags(prev => [...prev, newTag]);
+  };
+
   const formatDate = (date: Date) => {
     return date.toLocaleDateString(undefined, { 
       month: 'short', 
@@ -126,6 +151,8 @@ export default function Notebook() {
       year: date.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined
     });
   };
+
+  const getTagById = (tagId: string) => tags.find(t => t.id === tagId);
 
   const NoteCard = ({ note }: { note: Note }) => (
     <div
@@ -140,26 +167,29 @@ export default function Notebook() {
     >
       <div className="flex items-start justify-between gap-2 mb-2">
         <h3 className="font-medium text-foreground line-clamp-1">{note.title}</h3>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-            <Button variant="ghost" size="icon" className="h-7 w-7 opacity-0 group-hover:opacity-100">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleStar(note.id); }}>
-              {note.starred ? <StarOff className="h-4 w-4 mr-2" /> : <Star className="h-4 w-4 mr-2" />}
-              {note.starred ? t("notebook.unstar") : t("notebook.star")}
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              onClick={(e) => { e.stopPropagation(); deleteNote(note.id); }}
-              className="text-destructive"
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              {t("common.delete")}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-1">
+          <FavoriteButton
+            isFavorited={note.starred}
+            onToggle={() => toggleStar(note.id)}
+            size="sm"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+              <Button variant="ghost" size="icon" className="h-7 w-7 opacity-0 group-hover:opacity-100">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem 
+                onClick={(e) => { e.stopPropagation(); deleteNote(note.id); }}
+                className="text-destructive"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                {t("common.delete")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       {note.paperTitle && (
@@ -175,11 +205,15 @@ export default function Notebook() {
 
       <div className="flex items-center justify-between">
         <div className="flex gap-1 flex-wrap">
-          {note.tags.slice(0, 2).map(tag => (
-            <Badge key={tag} variant="secondary" className="text-xs">
-              {tag}
-            </Badge>
-          ))}
+          {note.tagIds.slice(0, 2).map(tagId => {
+            const tag = getTagById(tagId);
+            return tag ? (
+              <Badge key={tagId} variant="secondary" className="text-xs gap-1">
+                <div className={cn("w-2 h-2 rounded-full", tag.color)} />
+                {tag.name}
+              </Badge>
+            ) : null;
+          })}
         </div>
         <span className="text-xs text-muted-foreground flex items-center gap-1">
           <Calendar className="h-3 w-3" />
@@ -204,20 +238,58 @@ export default function Notebook() {
                 <p className="text-sm text-muted-foreground">{t("notebook.subtitle")}</p>
               </div>
             </div>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              {t("notebook.newNote")}
-            </Button>
+            <div className="flex items-center gap-2">
+              <TagManager
+                tags={tags}
+                onTagsChange={setTags}
+                mode="manage"
+                trigger={
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Settings2 className="h-4 w-4" />
+                    {t("tagManager.manageTags")}
+                  </Button>
+                }
+              />
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                {t("notebook.newNote")}
+              </Button>
+            </div>
           </div>
 
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t("notebook.searchPlaceholder")}
-              className="pl-10"
-            />
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={t("notebook.searchPlaceholder")}
+                className="pl-10"
+              />
+            </div>
+            {/* Tag Filter */}
+            <div className="flex gap-2 flex-wrap items-center">
+              <Button
+                variant={selectedTagFilter === null ? "secondary" : "ghost"}
+                size="sm"
+                className="h-8"
+                onClick={() => setSelectedTagFilter(null)}
+              >
+                {t("classicHall.eras.all")}
+              </Button>
+              {tags.slice(0, 5).map((tag) => (
+                <Button
+                  key={tag.id}
+                  variant={selectedTagFilter === tag.id ? "secondary" : "ghost"}
+                  size="sm"
+                  className="h-8 gap-1.5"
+                  onClick={() => setSelectedTagFilter(tag.id)}
+                >
+                  <div className={cn("w-2 h-2 rounded-full", tag.color)} />
+                  {tag.name}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -266,16 +338,10 @@ export default function Notebook() {
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-semibold text-foreground">{selectedNote.title}</h2>
                   <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => toggleStar(selectedNote.id)}
-                    >
-                      <Star className={cn(
-                        "h-4 w-4",
-                        selectedNote.starred && "fill-amber-500 text-amber-500"
-                      )} />
-                    </Button>
+                    <FavoriteButton
+                      isFavorited={selectedNote.starred}
+                      onToggle={() => toggleStar(selectedNote.id)}
+                    />
                     <Button
                       variant="outline"
                       size="sm"
@@ -298,10 +364,13 @@ export default function Notebook() {
                   </div>
                 )}
 
-                <div className="flex gap-2 mb-4">
-                  {selectedNote.tags.map(tag => (
-                    <Badge key={tag} variant="secondary">{tag}</Badge>
-                  ))}
+                <div className="mb-4">
+                  <TagSelector
+                    allTags={tags}
+                    selectedTagIds={selectedNote.tagIds}
+                    onTagsChange={(tagIds) => updateNoteTags(selectedNote.id, tagIds)}
+                    onAddNewTag={handleAddNewTag}
+                  />
                 </div>
 
                 {isEditing ? (
