@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import Index from "./pages/Index";
 import AcademicCircle from "./pages/AcademicCircle";
+import Recommendations from "./pages/Recommendations";
 import ClassicHall from "./pages/ClassicHall";
 import Notebook from "./pages/Notebook";
 import AgentLab from "./pages/AgentLab";
@@ -30,6 +31,7 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/academic-circle" element={<AcademicCircle />} />
+                  <Route path="/recommendations" element={<Recommendations />} />
                   <Route path="/classic-hall" element={<ClassicHall />} />
                   <Route path="/notebook" element={<Notebook />} />
                   <Route path="/agent-lab" element={<AgentLab />} />

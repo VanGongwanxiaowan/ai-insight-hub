@@ -19,6 +19,7 @@
   "nav": {
     "discovery": "发现",
     "academicCircle": "学术圈",
+    "recommendations": "推荐",
     "classicHall": "经典殿堂",
     "notebook": "笔记本",
     "agentLab": "智能工作台",
@@ -250,6 +251,24 @@
       "postedanoteon": "发布了笔记于",
       "sharedinsightsabout": "分享了见解于",
       "commentedon": "评论了"
+    }
+  },
+  "recommendations": {
+    "badge": "精选推荐",
+    "title": "论文推荐",
+    "subtitle": "按分类浏览热门经典论文，发现领域前沿研究",
+    "trending": "热门趋势",
+    "hot": "热门",
+    "citations": "引用",
+    "noResults": "暂无该分类的论文",
+    "categories": {
+      "all": "全部",
+      "agent": "智能体",
+      "aigc": "AIGC",
+      "imageGen": "图片生成",
+      "videoGen": "视频生成",
+      "llm": "大模型",
+      "ai": "人工智能"
     }
   }
 }
