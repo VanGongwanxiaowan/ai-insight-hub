@@ -8,7 +8,9 @@ import {
   FileText,
   TrendingUp,
   Flame,
-  ExternalLink
+  ExternalLink,
+  Settings2,
+  Tag
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -16,9 +18,29 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { TagManager, TagItem, TagSelector } from "@/components/TagManager";
 
-// Mock activity data
-const mockActivities = [
+interface Activity {
+  id: string;
+  user: {
+    name: string;
+    avatar: string;
+    title: string;
+  };
+  action: string;
+  content: string;
+  paper: {
+    title: string;
+    tags: string[];
+    tagIds: string[];
+  };
+  likes: number;
+  comments: number;
+  timestamp: string;
+  liked: boolean;
+}
+
+const initialActivities: Activity[] = [
   {
     id: "1",
     user: {
@@ -31,6 +53,7 @@ const mockActivities = [
     paper: {
       title: "FlashAttention-2: Faster Attention with Better Parallelism",
       tags: ["LLM", "Optimization"],
+      tagIds: ["tag-1", "tag-2"],
     },
     likes: 42,
     comments: 8,
@@ -45,10 +68,11 @@ const mockActivities = [
       title: "MIT CSAIL",
     },
     action: "shared insights about",
-    content: "Interesting comparison between RLHF and DPO. The simplicity of DPO makes it much more practical for smaller research labs. No need for a separate reward model!",
+    content: "Interesting comparison between RLHF and DPO. The simplicity of DPO makes it much more practical for smaller research labs.",
     paper: {
-      title: "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+      title: "Direct Preference Optimization",
       tags: ["RLHF", "Alignment"],
+      tagIds: ["tag-3", "tag-4"],
     },
     likes: 128,
     comments: 23,
@@ -67,6 +91,7 @@ const mockActivities = [
     paper: {
       title: "Scaling Laws for Neural Language Models",
       tags: ["Scaling", "LLM"],
+      tagIds: ["tag-1", "tag-5"],
     },
     likes: 89,
     comments: 15,
@@ -81,16 +106,27 @@ const mockActivities = [
       title: "PhD Candidate, Berkeley",
     },
     action: "posted a note on",
-    content: "Finally got Chain-of-Thought working on my custom dataset! The key was to include more diverse reasoning examples in the prompts.",
+    content: "Finally got Chain-of-Thought working on my custom dataset! The key was to include more diverse reasoning examples.",
     paper: {
-      title: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+      title: "Chain-of-Thought Prompting",
       tags: ["Reasoning", "Prompting"],
+      tagIds: ["tag-6", "tag-7"],
     },
     likes: 56,
     comments: 12,
     timestamp: "8h ago",
     liked: false,
   },
+];
+
+const initialTags: TagItem[] = [
+  { id: "tag-1", name: "LLM", color: "bg-blue-500", count: 12 },
+  { id: "tag-2", name: "Optimization", color: "bg-green-500", count: 5 },
+  { id: "tag-3", name: "RLHF", color: "bg-amber-500", count: 8 },
+  { id: "tag-4", name: "Alignment", color: "bg-purple-500", count: 6 },
+  { id: "tag-5", name: "Scaling", color: "bg-rose-500", count: 4 },
+  { id: "tag-6", name: "Reasoning", color: "bg-cyan-500", count: 7 },
+  { id: "tag-7", name: "Prompting", color: "bg-orange-500", count: 9 },
 ];
 
 const trendingScholars = [
@@ -103,14 +139,15 @@ const trendingScholars = [
 
 const hotDiscussions = [
   { title: "GPT-4 Technical Report", comments: 156, tags: ["LLM"] },
-  { title: "Constitutional AI: Harmlessness from AI Feedback", comments: 89, tags: ["Alignment"] },
-  { title: "LLaMA: Open and Efficient Foundation Language Models", comments: 72, tags: ["LLM"] },
-  { title: "Diffusion Models Beat GANs on Image Synthesis", comments: 64, tags: ["Diffusion"] },
+  { title: "Constitutional AI", comments: 89, tags: ["Alignment"] },
+  { title: "LLaMA: Open Foundation Models", comments: 72, tags: ["LLM"] },
+  { title: "Diffusion Models Beat GANs", comments: 64, tags: ["Diffusion"] },
 ];
 
 export default function AcademicCircle() {
   const { t } = useTranslation();
-  const [activities, setActivities] = useState(mockActivities);
+  const [activities, setActivities] = useState(initialActivities);
+  const [tags, setTags] = useState<TagItem[]>(initialTags);
 
   const toggleLike = (id: string) => {
     setActivities(prev => prev.map(activity => 
@@ -120,13 +157,40 @@ export default function AcademicCircle() {
     ));
   };
 
+  const updateActivityTags = (activityId: string, tagIds: string[]) => {
+    setActivities(prev => prev.map(activity => 
+      activity.id === activityId 
+        ? { ...activity, paper: { ...activity.paper, tagIds } }
+        : activity
+    ));
+  };
+
+  const handleAddNewTag = (newTag: TagItem) => {
+    setTags(prev => [...prev, newTag]);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-foreground">{t("academicCircle.title")}</h1>
-          <p className="text-muted-foreground text-sm mt-1">{t("academicCircle.subtitle")}</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">{t("academicCircle.title")}</h1>
+              <p className="text-muted-foreground text-sm mt-1">{t("academicCircle.subtitle")}</p>
+            </div>
+            <TagManager
+              tags={tags}
+              onTagsChange={setTags}
+              mode="manage"
+              trigger={
+                <Button variant="outline" size="sm" className="gap-2">
+                  <Settings2 className="h-4 w-4" />
+                  {t("tagManager.manageTags")}
+                </Button>
+              }
+            />
+          </div>
         </div>
       </div>
 
@@ -172,12 +236,13 @@ export default function AcademicCircle() {
                         <h4 className="font-medium text-foreground text-sm line-clamp-1 group-hover:text-primary transition-colors">
                           {activity.paper.title}
                         </h4>
-                        <div className="flex items-center gap-2 mt-1.5">
-                          {activity.paper.tags.map((tag) => (
-                            <Badge key={tag} variant="secondary" className="text-xs h-5 px-2 bg-primary/10 text-primary border-0">
-                              {tag}
-                            </Badge>
-                          ))}
+                        <div className="mt-1.5">
+                          <TagSelector
+                            allTags={tags}
+                            selectedTagIds={activity.paper.tagIds}
+                            onTagsChange={(tagIds) => updateActivityTags(activity.id, tagIds)}
+                            onAddNewTag={handleAddNewTag}
+                          />
                         </div>
                       </div>
                       <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -223,7 +288,7 @@ export default function AcademicCircle() {
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="space-y-3">
-                  {trendingScholars.map((scholar, index) => (
+                  {trendingScholars.map((scholar) => (
                     <div key={scholar.name} className="flex items-center gap-3 group cursor-pointer">
                       <Avatar className="h-9 w-9 border border-border">
                         <AvatarImage src={scholar.avatar} />

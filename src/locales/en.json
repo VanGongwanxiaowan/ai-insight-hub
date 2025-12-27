@@ -23,8 +23,25 @@
     "notebook": "Notebook",
     "agentLab": "Agent Lab",
     "settings": "Settings",
-    "tags": "Tags",
-    "manageTags": "Manage Tags"
+    "management": "Management",
+    "tagManagement": "Tag Management",
+    "favorites": "Favorites"
+  },
+  "tagManager": {
+    "manageTags": "Manage Tags",
+    "selectTags": "Select Tags",
+    "newTagPlaceholder": "Enter new tag name...",
+    "noTags": "No tags yet",
+    "addTag": "Add Tag"
+  },
+  "favorites": {
+    "title": "My Favorites",
+    "manage": "Manage Favorites",
+    "searchPlaceholder": "Search favorites...",
+    "papers": "Papers",
+    "notes": "Notes",
+    "empty": "No favorites yet",
+    "noResults": "No matching favorites found"
   },
   "topNav": {
     "searchPlaceholder": "Search papers, authors, topics...",
